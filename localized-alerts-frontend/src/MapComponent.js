@@ -1,42 +1,54 @@
-import React, { useState } from "react";
+import React from "react";
 import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
-import "leaflet/dist/leaflet.css";
 import L from "leaflet";
+import "leaflet/dist/leaflet.css";
 
-delete L.Icon.Default.prototype._getIconUrl;
-L.Icon.Default.mergeOptions({
-  iconRetinaUrl: require("leaflet/dist/images/marker-icon-2x.png"),
-  iconUrl: require("leaflet/dist/images/marker-icon.png"),
-  shadowUrl: require("leaflet/dist/images/marker-shadow.png"),
-});
+// Define custom icons for each severity level
+const getIcon = (severity) => {
+  let color;
+  switch (severity) {
+    case "low":
+      color = "green";
+      break;
+    case "medium":
+      color = "orange";
+      break;
+    case "high":
+      color = "red";
+      break;
+    default:
+      color = "blue";
+  }
+  return L.divIcon({
+    className: "custom-marker",
+    html: `<span style="background-color: ${color}; width: 20px; height: 20px; border-radius: 50%; display: inline-block;"></span>`,
+  });
+};
 
-const MapComponent = () => {
-  const [position, setPosition] = useState([51.505, -0.09]);
-  const [alertMessage, setAlertMessage] = useState("");
-
-  const handleAddAlert = (e) => {
-    setPosition([e.latlng.lat, e.latlng.lng]);
-    setAlertMessage(`Alert set for location: ${e.latlng.lat}, ${e.latlng.lng}`);
-  };
-
+const MapComponent = ({ alerts }) => {
   return (
-    <div>
-      <h2>Location-Based Alert System</h2>
-      <MapContainer
-        center={position}
-        zoom={13}
-        style={{ height: "400px", width: "100%" }}
-        onclick={handleAddAlert}
-      >
-        <TileLayer
-          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-          attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-        />
-        <Marker position={position}>
-          <Popup>{alertMessage || "Click on the map to set an alert."}</Popup>
+    <MapContainer
+      center={[37.7749, -122.4194]}
+      zoom={5}
+      style={{ height: "500px", width: "100%" }}
+    >
+      <TileLayer
+        url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+        attribution='&copy; <a href="https://osm.org/copyright">OpenStreetMap</a> contributors'
+      />
+      {alerts.map((alert) => (
+        <Marker
+          key={alert.id}
+          position={[alert.location.lat, alert.location.lng]}
+          icon={getIcon(alert.severity)}
+        >
+          <Popup>
+            <b>{alert.name}</b> <br />
+            Severity: {alert.severity}
+          </Popup>
         </Marker>
-      </MapContainer>
-    </div>
+      ))}
+    </MapContainer>
   );
 };
 
