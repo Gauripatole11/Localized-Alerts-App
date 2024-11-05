@@ -2,6 +2,7 @@ import React from "react";
 import "./App.css";
 import MapComponent from "./MapComponent";
 import AlertList from "./components/AlertList";
+import AlertsComponent from "./components/AlertsComponent";
 
 const alertData = [
   {
@@ -29,6 +30,7 @@ const App = () => {
     <div className="App">
       <h1>Alert System</h1>
       <AlertList />
+      <AlertsComponent />
       <MapComponent alerts={alertData} /> {/* Pass alertData as alerts prop */}
     </div>
   );
