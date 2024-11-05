@@ -28,13 +28,17 @@ const AlertList = () => {
   return (
     <div>
       <h2>Alerts</h2>
-      <ul>
-        {alerts.map((alert, index) => (
-          <li key={index}>
-            <strong>{alert.title}</strong> at {alert.location}
-          </li>
-        ))}
-      </ul>
+      {alerts.length > 0 ? (
+        <ul>
+          {alerts.map((alert, index) => (
+            <li key={index}>
+              <strong>{alert.title}</strong> at {alert.location}
+            </li>
+          ))}
+        </ul>
+      ) : (
+        <p>No alerts available</p>
+      )}
     </div>
   );
 };
