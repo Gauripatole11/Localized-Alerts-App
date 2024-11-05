@@ -1,28 +1,23 @@
-// backend/routes/alerts.js
+// routes/alerts.js
 const express = require("express");
 const router = express.Router();
-const Alert = require("../models/Alert");
+const Alert = require("../models/Alert"); // Import the Alert model
 
-// POST /api/alerts - Create a new alert
-router.post("/", async (req, res) => {
-  try {
-    const { location, alertMessage } = req.body;
-    const newAlert = new Alert({ location, alertMessage });
-    await newAlert.save();
-    res.status(201).json(newAlert);
-  } catch (error) {
-    res.status(500).json({ error: "Error creating alert" });
-  }
+// In-memory storage for alerts (optional, replace with database logic if needed)
+let alerts = [];
+
+// Define route for creating alerts
+router.post("/", (req, res) => {
+  const { title, location } = req.body;
+  const newAlert = { title, location };
+  alerts.push(newAlert); // Save alert to in-memory array
+  console.log(`Alert created: ${title} at ${location}`);
+  res.status(201).send({ message: "Alert created", alert: newAlert });
 });
 
-// GET /api/alerts - Get all alerts
-router.get("/", async (req, res) => {
-  try {
-    const alerts = await Alert.find();
-    res.status(200).json(alerts);
-  } catch (error) {
-    res.status(500).json({ error: "Error fetching alerts" });
-  }
+// Define route for getting alerts
+router.get("/", (req, res) => {
+  res.status(200).send(alerts); // Send all alerts
 });
 
 module.exports = router;
