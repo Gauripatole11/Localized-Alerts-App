@@ -1,7 +1,7 @@
 import React from "react";
 import "./App.css";
 import MapComponent from "./MapComponent";
-import AlertList from "./components/AlertList"; // Make sure this path is correct
+import AlertList from "./components/AlertList";
 
 const App = () => {
   return (

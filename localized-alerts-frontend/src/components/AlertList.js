@@ -1,4 +1,3 @@
-// src/components/AlertList.js
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 
@@ -10,8 +9,8 @@ const AlertList = () => {
   useEffect(() => {
     const fetchAlerts = async () => {
       try {
-        const response = await axios.get("http://localhost:5000/api/alerts"); // Update with your endpoint
-        setAlerts(response.data); // Assuming the response contains the alerts
+        const response = await axios.get("http://localhost:5000/api/alerts");
+        setAlerts(response.data);
       } catch (err) {
         setError("Error fetching alerts");
       } finally {

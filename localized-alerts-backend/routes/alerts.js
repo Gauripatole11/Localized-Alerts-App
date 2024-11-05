@@ -1,9 +1,8 @@
-// routes/alerts.js
 const express = require("express");
 const router = express.Router();
-const Alert = require("../models/Alert"); // Import the Alert model
+const Alert = require("../models/Alert");
 
-// In-memory storage for alerts (optional, replace with database logic if needed)
+// In-memory storage for alerts
 let alerts = [];
 
 // Define route for creating alerts
@@ -15,9 +14,9 @@ router.post("/", (req, res) => {
   res.status(201).send({ message: "Alert created", alert: newAlert });
 });
 
-// Define route for getting alerts
+// Defining route for getting alerts
 router.get("/", (req, res) => {
-  res.status(200).send(alerts); // Send all alerts
+  res.status(200).send(alerts); // Sending all alerts
 });
 
 module.exports = router;
