@@ -9,20 +9,24 @@ const AlertList = () => {
   useEffect(() => {
     const fetchAlerts = async () => {
       try {
-        const response = await axios.get("http://localhost:5001/api/alerts");
-        setAlerts(response.data);
+        const response = await axios.get("/api/alerts", {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        });
+        setAlerts(response.data); // Assuming the backend sends an array of alerts
       } catch (err) {
-        setError("Error fetching alerts");
-      } finally {
-        setLoading(false);
+        console.error(err);
+        setError("Failed to load alerts. Please make sure you're logged in.");
       }
     };
 
     fetchAlerts();
   }, []);
 
-  if (loading) return <p>Loading...</p>;
-  if (error) return <p>{error}</p>;
+  if (error) {
+    return <p>{error}</p>;
+  }
 
   return (
     <div>
